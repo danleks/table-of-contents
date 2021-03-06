@@ -176,33 +176,38 @@
 	</footer>
 
 	<script>
-        const tableOfContents = document.querySelector('#table-of-contents');
-        const tableOfContentsItems = Array.from(document.querySelectorAll('h2'));
+        ;(() => {
+            // get html
+            const tableOfContents = document.querySelector('#table-of-contents');
+            const headings = Array.from(document.querySelectorAll('h2'));
 
-        // helper function to get id and content
-        // for a link based on tag's content
-        const handleTag = (tag) => { 
-            if (tag.id.length < 1) {
-               tag.setAttribute('id', tag.textContent.toLowerCase().replace(/[^a-z0-9]+/gi,'-'));
-            }
-            return {
-                id: tag.id,
-                content: tag.textContent,
+            // helper function to get id and content
+            // for a link based on tag's content
+            const handleTag = (tag) => { 
+                if (tag.id.length < 1) {
+                tag.setAttribute('id', tag.textContent.toLowerCase().replace(/[^a-z0-9]+/gi,'-'));
+                }
+                return {
+                    id: tag.id,
+                    content: tag.textContent,
+                };
             };
-        };
 
-        const tableOfContentsHandler = () => {
-            const html = tableOfContentsItems.map(item => {
-                const {id, content} = handleTag(item);
-                return `
-                    <a href='#${id}'>${content}</a>
-                `
-            }).join('');
+            const tableOfContentsHandler = () => {            
+                // loop through each heading
+                const html = headings.map(heading => {
+                    const {id, content} = handleTag(heading);
+                    return `
+                        <a href='#${id}'>${content}</a>
+                    `
+                }).join('');
 
-            tableOfContents.innerHTML = html;
-        };
+                // render html
+                tableOfContents.innerHTML = html;
+            };
 
-        tableOfContentsHandler();
+            tableOfContentsHandler();
+        })();
 	</script>
 </body>
 </html>
